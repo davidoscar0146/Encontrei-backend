@@ -121,9 +121,3 @@ curl -X POST http://localhost:5000/reservations -H "Content-Type: application/js
 
 ---
 
-Se quiser, eu posso:
-- atualizar o seed para salvar senhas hasheadas com `bcrypt`;
-- ocultar o campo `password` nas respostas da API;
-- adicionar endpoints de CRUD (criar/editar/excluir) para produtos e lojas.
-
-Diga qual desses próximos passos você prefere que eu implemente agora.
