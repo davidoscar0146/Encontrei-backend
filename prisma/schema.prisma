@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  userType  String
+  createdAt DateTime @default(now())
+
+  stores    Store[]  @relation("SellerStores")
+  buyerReservations  Reservation[] @relation("BuyerReservations")
+  sellerReservations Reservation[] @relation("SellerReservations")
+}
+
+model Store {
+  id        Int     @id @default(autoincrement())
+  sellerId  Int
+  name      String
+  cpfCnpj   String
+  segment   String
+  distance  String
+
+  seller    User    @relation("SellerStores", fields: [sellerId], references: [id])
+  products  Product[]
+}
+
+model Product {
+  id        Int     @id @default(autoincrement())
+  storeId   Int
+  name      String
+  category  String
+  price     Float
+  stock     Int
+  sizes     String
+  colors    String
+
+  store     Store   @relation(fields: [storeId], references: [id])
+  reservations Reservation[]
+}
+
+model Reservation {
+  id        Int    @id @default(autoincrement())
+  productId Int
+  buyerId   Int
+  sellerId  Int
+  date      DateTime
+  status    String
+  note      String?
+
+  product   Product @relation(fields: [productId], references: [id])
+  buyer     User    @relation("BuyerReservations", fields: [buyerId], references: [id])
+  seller    User    @relation("SellerReservations", fields: [sellerId], references: [id])
+}
