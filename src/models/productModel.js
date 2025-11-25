@@ -1,7 +1,32 @@
-const prisma = require('./prisma')
+// src/models/productModel.js
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 module.exports = {
-  findAll: () => prisma.product.findMany({ include: { store: true } }),
-  findById: (id) => prisma.product.findUnique({ where: { id: Number(id) }, include: { store: true } }),
-  create: (data) => prisma.product.create({ data }),
-}
+  async create(data) {
+    return prisma.product.create({ data });
+  },
+
+  async findAll() {
+    return prisma.product.findMany();
+  },
+
+  async findById(id) {
+    return prisma.product.findUnique({
+      where: { id: Number(id) }
+    });
+  },
+
+  async update(id, data) {
+    return prisma.product.update({
+      where: { id: Number(id) },
+      data
+    });
+  },
+
+  async remove(id) {
+    return prisma.product.delete({
+      where: { id: Number(id) }
+    });
+  }
+};

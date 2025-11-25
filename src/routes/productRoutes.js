@@ -1,13 +1,52 @@
-// routes/productRoutes.js
+// src/routes/productRoutes.js
 const express = require("express");
 const router = express.Router();
-const productController = require("../controller/productController");
+const productService = require("../services/productService");
 
-router.post("/", productController.create);
-router.get("/", productController.getAll);
-router.get("/:id", productController.getById);
-router.put("/:id", productController.update);
-router.delete("/:id", productController.delete);
+router.post("/", async (req, res) => {
+  try {
+    const product = await productService.create(req.body);
+    return res.status(201).json(product);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const products = await productService.getAll();
+    return res.json(products);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const product = await productService.getById(req.params.id);
+    return res.json(product);
+  } catch (err) {
+    return res.status(404).json({ error: err.message });
+  }
+});
+
+
+router.put("/:id", async (req, res) => {
+  try {
+    const product = await productService.update(req.params.id, req.body);
+    return res.json(product);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await productService.delete(req.params.id);
+    return res.json({ message: "Produto removido com sucesso" });
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+});
 
 module.exports = router;
-
