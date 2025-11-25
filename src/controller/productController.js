@@ -38,17 +38,6 @@ module.exports = {
     }
   },
 
-  async getByStore(req, res) {
-    try {
-      const { storeId } = req.params;
-      const products = await productRepository.findByStore(storeId);
-      return res.json(products);
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Erro ao buscar produtos da loja" });
-    }
-  },
-
   async update(req, res) {
     try {
       const { id } = req.params;

@@ -16,12 +16,6 @@ module.exports = {
     });
   },
 
-  async findByStore(storeId) {
-    return prisma.product.findMany({
-      where: { storeId: Number(storeId) },
-    });
-  },
-
   async update(id, data) {
     return prisma.product.update({
       where: { id: Number(id) },
